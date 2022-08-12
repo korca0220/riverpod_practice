@@ -1,5 +1,9 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:riverpod_practice/data/sourdes/local/custom_object/memo.dart';
+
+final memoLocalSourceProvider =
+    FutureProvider<MemoLocalSource>(((ref) => MemoLocalSource()));
 
 class MemoLocalSource {
   MemoLocalSource() {
