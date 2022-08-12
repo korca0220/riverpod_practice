@@ -5,6 +5,26 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Memo'),
+      ),
+      body: Column(
+        children: [
+          Container(
+            height: 50,
+            color: Colors.red,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: ((context, index) => ListTile(
+                    title: Text('Item $index'),
+                  )),
+              itemCount: 10,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
