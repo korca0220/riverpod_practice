@@ -6,6 +6,6 @@ abstract class MemoRepository {
   Future<BooleanMemoResponse> create(Memo memo);
   Future<BooleanMemoResponse> update(Memo memo);
   Future<BooleanMemoResponse> delete(String id);
-  Future<Either<Exception, Memo>> get(String id);
+  Future<NullableMemoResponse> get(String id);
   Future<ListMemoResponse> getAll();
 }

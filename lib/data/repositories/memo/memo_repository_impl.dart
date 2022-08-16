@@ -28,9 +28,9 @@ class MemoRepositoryImpl implements MemoRepository {
   }
 
   @override
-  Future<Either<Exception, Memo>> get(String id) {
-    // TODO: implement get
-    throw UnimplementedError();
+  Future<NullableMemoResponse> get(String id) async {
+    final result = await _memoLocalSource.getMemo(id);
+    return result.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
@@ -40,8 +40,8 @@ class MemoRepositoryImpl implements MemoRepository {
   }
 
   @override
-  Future<BooleanMemoResponse> update(Memo memo) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<BooleanMemoResponse> update(Memo memo) async {
+    final result = await _memoLocalSource.updateMemo(memo);
+    return result.fold((l) => Left(l), (r) => Right(r));
   }
 }

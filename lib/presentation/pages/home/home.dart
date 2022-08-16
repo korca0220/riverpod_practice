@@ -12,7 +12,7 @@ class Home extends ConsumerWidget {
     final viewModel = ref.watch(homeViewModelProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Memo'),
+        title: const Text('Memo'),
       ),
       body: Column(
         children: [
