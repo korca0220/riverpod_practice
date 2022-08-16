@@ -3,6 +3,7 @@ import 'package:riverpod_practice/data/sources/local/custom_object/memo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:riverpod_practice/data/sources/local/memo_local_source.dart';
 import 'package:riverpod_practice/domain/repositories/memo/memo_repository.dart';
+import 'package:riverpod_practice/global/typedef/typedefs.dart';
 
 final memoRepositoryProvider = Provider<MemoRepositoryImpl>((ref) {
   return MemoRepositoryImpl();
@@ -15,15 +16,15 @@ class MemoRepositoryImpl implements MemoRepository {
   }
 
   @override
-  Future<Either<Exception, bool>> create(Memo memo) async {
+  Future<BooleanMemoResponse> create(Memo memo) async {
     final result = await _memoLocalSource.addMemo(memo);
     return result.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
-  Future<Either<Exception, Memo>> delete(String id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<BooleanMemoResponse> delete(String id) async {
+    final result = await _memoLocalSource.deleteMemo(id);
+    return result.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
@@ -39,7 +40,7 @@ class MemoRepositoryImpl implements MemoRepository {
   }
 
   @override
-  Future<Either<Exception, Memo>> update(Memo memo) {
+  Future<BooleanMemoResponse> update(Memo memo) {
     // TODO: implement update
     throw UnimplementedError();
   }

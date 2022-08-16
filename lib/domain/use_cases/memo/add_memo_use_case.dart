@@ -1,22 +1,21 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/data/repositories/memo/memo_repository_impl.dart';
+import 'package:riverpod_practice/data/sources/local/custom_object/memo.dart';
 import 'package:riverpod_practice/domain/repositories/repositories.dart'
     show MemoRepository;
 import 'package:riverpod_practice/global/interfaces/interfaces.dart'
-    show NoParamUseCase;
+    show ParamUseCase;
 import 'package:riverpod_practice/global/typedef/typedefs.dart';
 
-final getAllMemoUseCase = Provider<GetAllMemoUseCase>(
-  (ref) => GetAllMemoUseCase(ref.read(memoRepositoryProvider)),
-);
+final addMemoUseCase = Provider<AddMemoUseCase>(
+    ((ref) => AddMemoUseCase(ref.read(memoRepositoryProvider))));
 
-class GetAllMemoUseCase extends NoParamUseCase<ListMemoResponse> {
+class AddMemoUseCase extends ParamUseCase<BooleanMemoResponse, Memo> {
   final MemoRepository _repository;
-  GetAllMemoUseCase(this._repository);
+  AddMemoUseCase(this._repository);
 
   @override
-  Future<ListMemoResponse> execute() {
-    return _repository.getAll();
+  Future<BooleanMemoResponse> execute(Memo param) async {
+    return _repository.create(param);
   }
 }

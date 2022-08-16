@@ -18,10 +18,10 @@ class MemoLocalSource {
     await Hive.openBox<Memo>(_kMemoBoxName);
   }
 
-  Future<Either<Exception, bool>> addMemo(Memo memo) async {
+  Future<BooleanMemoResponse> addMemo(Memo memo) async {
     final box = await Hive.openBox<Memo>(_kMemoBoxName);
     try {
-      await box.add(memo);
+      await box.put(memo.id, memo);
       return const Right(true);
     } on Exception catch (e) {
       return Left(e);
@@ -33,9 +33,14 @@ class MemoLocalSource {
     await box.put(memo.id, memo);
   }
 
-  Future<void> deleteMemo(String id) async {
+  Future<BooleanMemoResponse> deleteMemo(String id) async {
     final box = await Hive.openBox<Memo>(_kMemoBoxName);
-    await box.delete(id);
+    try {
+      await box.delete(id);
+      return const Right(true);
+    } on Exception catch (e) {
+      return Left(e);
+    }
   }
 
   Future<Memo?> getMemo(String id) async {
