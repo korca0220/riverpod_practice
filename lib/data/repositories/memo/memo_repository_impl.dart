@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_practice/data/sourdes/local/custom_object/memo.dart';
+import 'package:riverpod_practice/data/sources/local/custom_object/memo.dart';
 import 'package:dartz/dartz.dart';
-import 'package:riverpod_practice/data/sourdes/local/memo_local_source.dart';
+import 'package:riverpod_practice/data/sources/local/memo_local_source.dart';
 import 'package:riverpod_practice/domain/repositories/memo/memo_repository.dart';
 
-final memoRepositoryProvider = FutureProvider<MemoRepositoryImpl>((ref) {
+final memoRepositoryProvider = Provider<MemoRepositoryImpl>((ref) {
   return MemoRepositoryImpl();
 });
 
@@ -33,9 +33,9 @@ class MemoRepositoryImpl implements MemoRepository {
   }
 
   @override
-  Future<Either<Exception, List<Memo>>> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
+  Future<Either<Exception, List<Memo>>> getAll() async {
+    final result = await _memoLocalSource.getAllMemos();
+    return result.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
