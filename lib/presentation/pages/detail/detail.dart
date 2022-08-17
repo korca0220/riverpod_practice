@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_practice/data/sources/local/custom_object/memo.dart';
 import 'package:riverpod_practice/domain/entities/memo/memo_entity.dart';
 import 'package:riverpod_practice/presentation/view_models/detail/detail_view_model.dart';
-import 'package:riverpod_practice/presentation/view_models/provider/memo_provider.dart';
 
 class DetailPage extends HookConsumerWidget {
   const DetailPage({required this.id, Key? key}) : super(key: key);
