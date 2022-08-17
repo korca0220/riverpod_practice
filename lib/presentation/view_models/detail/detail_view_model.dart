@@ -8,6 +8,4 @@ final detailViewModelProvider = Provider<DetailViewModel>((ref) {
 
 class DetailViewModel {
   final memo = memoProvider;
-  
-  DetailViewModel() {}
 }

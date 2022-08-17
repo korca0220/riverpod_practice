@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/data/sources/local/custom_object/memo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:riverpod_practice/data/sources/local/memo_local_source.dart';
+import 'package:riverpod_practice/domain/entities/memo/memo_entity.dart';
 import 'package:riverpod_practice/domain/repositories/memo/memo_repository.dart';
 import 'package:riverpod_practice/global/typedef/typedefs.dart';
 
@@ -16,8 +17,8 @@ class MemoRepositoryImpl implements MemoRepository {
   }
 
   @override
-  Future<BooleanMemoResponse> create(Memo memo) async {
-    final result = await _memoLocalSource.addMemo(memo);
+  Future<BooleanMemoResponse> create(MemoEntity memo) async {
+    final result = await _memoLocalSource.addMemo(memoMapper(memo));
     return result.fold((l) => Left(l), (r) => Right(r));
   }
 
@@ -30,18 +31,46 @@ class MemoRepositoryImpl implements MemoRepository {
   @override
   Future<NullableMemoResponse> get(String id) async {
     final result = await _memoLocalSource.getMemo(id);
-    return result.fold((l) => Left(l), (r) => Right(r));
+    return result.fold((l) => Left(l), (r) {
+      if (r != null) {
+        return Right(memoEntityMapper(r));
+      } else {
+        return const Right(null);
+      }
+    });
   }
 
   @override
-  Future<Either<Exception, List<Memo>>> getAll() async {
+  Future<ListMemoResponse> getAll() async {
     final result = await _memoLocalSource.getAllMemos();
-    return result.fold((l) => Left(l), (r) => Right(r));
+    return result.fold((l) => Left(l), (r) {
+      final memoEntityList =
+          r.map<MemoEntity>((memo) => memoEntityMapper(memo)).toList();
+      return Right(memoEntityList);
+    });
   }
 
   @override
-  Future<BooleanMemoResponse> update(Memo memo) async {
-    final result = await _memoLocalSource.updateMemo(memo);
+  Future<BooleanMemoResponse> update(MemoEntity memo) async {
+    final result = await _memoLocalSource.updateMemo(memoMapper(memo));
     return result.fold((l) => Left(l), (r) => Right(r));
+  }
+
+  memoEntityMapper(Memo memo) {
+    return MemoEntity(
+      id: memo.id,
+      title: memo.title,
+      content: memo.content,
+      createdAt: memo.createdAt,
+    );
+  }
+
+  memoMapper(MemoEntity memoEntity) {
+    return Memo(
+      id: memoEntity.id,
+      title: memoEntity.title,
+      content: memoEntity.content,
+      createdAt: memoEntity.createdAt,
+    );
   }
 }

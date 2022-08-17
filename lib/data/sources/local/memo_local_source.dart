@@ -14,7 +14,7 @@ class MemoLocalSource {
     await Hive.openBox<Memo>(_kMemoBoxName);
   }
 
-  Future<BooleanMemoResponse> addMemo(Memo memo) async {
+  Future<Either<Exception, bool>> addMemo(Memo memo) async {
     final box = await Hive.openBox<Memo>(_kMemoBoxName);
     try {
       await box.put(memo.id, memo);
@@ -24,7 +24,7 @@ class MemoLocalSource {
     }
   }
 
-  Future<BooleanMemoResponse> updateMemo(Memo memo) async {
+  Future<Either<Exception, bool>> updateMemo(Memo memo) async {
     final box = await Hive.openBox<Memo>(_kMemoBoxName);
     try {
       await box.put(memo.id, memo);
@@ -34,7 +34,7 @@ class MemoLocalSource {
     }
   }
 
-  Future<BooleanMemoResponse> deleteMemo(String id) async {
+  Future<Either<Exception, bool>> deleteMemo(String id) async {
     final box = await Hive.openBox<Memo>(_kMemoBoxName);
     try {
       await box.delete(id);
@@ -44,7 +44,7 @@ class MemoLocalSource {
     }
   }
 
-  Future<NullableMemoResponse> getMemo(String id) async {
+  Future<Either<Exception, Memo?>> getMemo(String id) async {
     final box = await Hive.openBox<Memo>(_kMemoBoxName);
     try {
       final memo = box.get(id);
@@ -54,7 +54,7 @@ class MemoLocalSource {
     }
   }
 
-  Future<ListMemoResponse> getAllMemos() async {
+  Future<Either<Exception, List<Memo>>> getAllMemos() async {
     final box = await Hive.openBox<Memo>(_kMemoBoxName);
     try {
       final memoList = box.values.toList();

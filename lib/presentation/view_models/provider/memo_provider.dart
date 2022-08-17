@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/data/sources/local/custom_object/memo.dart';
+import 'package:riverpod_practice/domain/entities/memo/memo_entity.dart';
 import 'package:riverpod_practice/domain/use_cases/memo/add_memo_use_case.dart';
 import 'package:riverpod_practice/domain/use_cases/memo/delete_memo_use_case.dart';
 import 'package:riverpod_practice/domain/use_cases/memo/get_all_memo_use_case.dart';
@@ -10,7 +11,7 @@ import 'package:riverpod_practice/presentation/state/state.dart';
 import 'package:uuid/uuid.dart';
 
 final memoProvider =
-    StateNotifierProvider<MemoStateProvider, State<List<Memo>>>(((ref) {
+    StateNotifierProvider<MemoStateProvider, State<List<MemoEntity>>>(((ref) {
   return MemoStateProvider(
     ref.read(getAllMemoUseCase),
     ref.read(addMemoUseCase),
@@ -20,7 +21,7 @@ final memoProvider =
   );
 }));
 
-class MemoStateProvider extends StateNotifier<State<List<Memo>>> {
+class MemoStateProvider extends StateNotifier<State<List<MemoEntity>>> {
   final GetAllMemoUseCase _getAllMemoUseCase;
   final AddMemoUseCase _addMemoUseCase;
   final DeleteMemoUseCase _deleteMemoUseCase;
@@ -46,7 +47,7 @@ class MemoStateProvider extends StateNotifier<State<List<Memo>>> {
   }
 
   Future<void> addMemo(String title, String content) async {
-    final memo = Memo(
+    final memo = MemoEntity(
         id: const Uuid().v4(),
         title: title,
         createdAt: DateTime.now(),
@@ -54,7 +55,7 @@ class MemoStateProvider extends StateNotifier<State<List<Memo>>> {
     final BooleanMemoResponse result = await _addMemoUseCase.execute(memo);
     result.fold((l) => State.error(l), (r) {
       if (state.data != null) {
-        state = State.success(state.data! + [memo]);        
+        state = State.success(state.data! + [memo]);
       } else {
         state = State.success([memo]);
       }
@@ -73,7 +74,7 @@ class MemoStateProvider extends StateNotifier<State<List<Memo>>> {
     });
   }
 
-  Future<void> updateMemo(Memo memo) async {
+  Future<void> updateMemo(MemoEntity memo) async {
     final BooleanMemoResponse result = await _updateMemoUseCase.execute(memo);
     result.fold((l) => State.error(l), (r) {
       state = State.success(state.data!.map((value) {

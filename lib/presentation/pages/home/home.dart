@@ -57,11 +57,15 @@ class Home extends ConsumerWidget {
                                 );
                           },
                           child: InkWell(
-                            child: ListTile(
-                              title: Text(value[index].title),
-                              subtitle: Text(value[index].content ?? ''),
+                            child: SizedBox(
+                              height: 100,
+                              child: ListTile(
+                                title: Text(value[index].title),
+                                subtitle: Text(value[index].content ?? ''),
+                                dense: true,
+                              ),
                             ),
-                            onTap: () {                              
+                            onTap: () {
                               GoRouter.of(context).pushNamed(
                                 RouteList.detail_page.name,
                                 params: {'id': value[index].id},
