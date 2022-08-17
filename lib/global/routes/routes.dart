@@ -11,5 +11,7 @@ class Route {
 
 abstract class RouteList {
   static final home = Route(name: 'home', path: '/');
-  static final new_page = Route(name: 'new_page', path: '/new_page');
+  static final new_page = Route(name: 'new_page', path: 'new_page');
+  static final detail_page =
+      Route(name: 'detail_page', path: 'detail_page/:id');
 }

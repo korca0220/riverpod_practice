@@ -61,7 +61,12 @@ class Home extends ConsumerWidget {
                               title: Text(value[index].title),
                               subtitle: Text(value[index].content ?? ''),
                             ),
-                            onTap: () {},
+                            onTap: () {                              
+                              GoRouter.of(context).pushNamed(
+                                RouteList.detail_page.name,
+                                params: {'id': value[index].id},
+                              );
+                            },
                           ),
                         )),
                     itemCount: value.length,

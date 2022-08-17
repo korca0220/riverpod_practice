@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:riverpod_practice/presentation/pages/new_memo/new_memo.dart';
 import 'package:riverpod_practice/presentation/pages/pages.dart';
 
 part './routes.dart';
@@ -26,10 +25,20 @@ class RouterNotifier extends ChangeNotifier {
           name: RouteList.home.name,
           path: RouteList.home.path,
           builder: (context, _) => const Home(),
+          routes: [
+            GoRoute(
+              name: RouteList.new_page.name,
+              path: RouteList.new_page.path,
+              builder: (context, _) => const NewMemo(),
+            ),
+            GoRoute(
+              name: RouteList.detail_page.name,
+              path: RouteList.detail_page.path,
+              builder: (context, state) {
+                return DetailPage(id: state.params['id']!);
+              },
+            ),
+          ],
         ),
-        GoRoute(
-            name: RouteList.new_page.name,
-            path: RouteList.new_page.path,
-            builder: (context, _) => const NewMemo()),
       ];
 }
