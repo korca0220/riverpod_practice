@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_practice/data/sources/local/custom_object/memo.dart';
+import 'package:riverpod_practice/global/routes/pages.dart';
 import 'package:riverpod_practice/presentation/view_models/home/home_view_model.dart';
 import 'package:uuid/uuid.dart';
 
@@ -24,14 +26,7 @@ class Home extends ConsumerWidget {
               child: const Center(child: Text('New Memo')),
             ),
             onTap: () {
-              ref.watch(viewModel.memo.notifier).addMemo(
-                    Memo(
-                      id: const Uuid().v4(),
-                      title: 'Hello',
-                      content: 'Test',
-                      createdAt: DateTime.now(),
-                    ),
-                  );
+              GoRouter.of(context).pushNamed(RouteList.new_page.name);
             },
           ),
           Expanded(
@@ -61,8 +56,12 @@ class Home extends ConsumerWidget {
                                   value[index].id,
                                 );
                           },
-                          child: ListTile(
-                            title: Text(value[index].title),
+                          child: InkWell(
+                            child: ListTile(
+                              title: Text(value[index].title),
+                              subtitle: Text(value[index].content ?? ''),
+                            ),
+                            onTap: () {},
                           ),
                         )),
                     itemCount: value.length,

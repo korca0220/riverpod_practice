@@ -7,6 +7,7 @@ import 'package:riverpod_practice/domain/use_cases/memo/get_memo_use_case.dart';
 import 'package:riverpod_practice/domain/use_cases/memo/update_memo_use_case.dart';
 import 'package:riverpod_practice/global/typedef/typedefs.dart';
 import 'package:riverpod_practice/presentation/state/state.dart';
+import 'package:uuid/uuid.dart';
 
 final memoProvider =
     StateNotifierProvider<MemoStateProvider, State<List<Memo>>>(((ref) {
@@ -44,12 +45,16 @@ class MemoStateProvider extends StateNotifier<State<List<Memo>>> {
     });
   }
 
-  Future<void> addMemo(Memo memo) async {
-    state = const State.loading();
+  Future<void> addMemo(String title, String content) async {
+    final memo = Memo(
+        id: const Uuid().v4(),
+        title: title,
+        createdAt: DateTime.now(),
+        content: content);
     final BooleanMemoResponse result = await _addMemoUseCase.execute(memo);
     result.fold((l) => State.error(l), (r) {
       if (state.data != null) {
-        state = State.success(state.data! + [memo]);
+        state = State.success(state.data! + [memo]);        
       } else {
         state = State.success([memo]);
       }
@@ -57,7 +62,6 @@ class MemoStateProvider extends StateNotifier<State<List<Memo>>> {
   }
 
   Future<void> deleteMemo(String id) async {
-    state = const State.loading();
     final BooleanMemoResponse result = await _deleteMemoUseCase.execute(id);
     result.fold((l) => State.error(l), (r) {
       if (state.data != null) {
@@ -70,7 +74,6 @@ class MemoStateProvider extends StateNotifier<State<List<Memo>>> {
   }
 
   Future<void> updateMemo(Memo memo) async {
-    state = const State.loading();
     final BooleanMemoResponse result = await _updateMemoUseCase.execute(memo);
     result.fold((l) => State.error(l), (r) {
       state = State.success(state.data!.map((value) {
@@ -84,7 +87,6 @@ class MemoStateProvider extends StateNotifier<State<List<Memo>>> {
   }
 
   Future<void> getMemo(String id) async {
-    state = const State.loading();
     final NullableMemoResponse result = await _getMemoUseCase.execute(id);
     result.fold((l) => State.error(l), (r) {
       if (r != null) {
