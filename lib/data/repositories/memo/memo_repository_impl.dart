@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_practice/data/models/memo_dto.dart';
 import 'package:riverpod_practice/data/sources/local/custom_object/memo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:riverpod_practice/data/sources/local/memo_local_source.dart';
@@ -18,7 +19,8 @@ class MemoRepositoryImpl implements MemoRepository {
 
   @override
   Future<BooleanMemoResponse> create(MemoEntity memo) async {
-    final result = await _memoLocalSource.addMemo(memoMapper(memo));
+    final result =
+        await _memoLocalSource.addMemo(memoDtoMapperFromMemoEntity(memo));
     return result.fold((l) => Left(l), (r) => Right(r));
   }
 
@@ -33,7 +35,7 @@ class MemoRepositoryImpl implements MemoRepository {
     final result = await _memoLocalSource.getMemo(id);
     return result.fold((l) => Left(l), (r) {
       if (r != null) {
-        return Right(memoEntityMapper(r));
+        return Right(memoEntityMapperFromMemoDto(r));
       } else {
         return const Right(null);
       }
@@ -44,19 +46,21 @@ class MemoRepositoryImpl implements MemoRepository {
   Future<ListMemoResponse> getAll() async {
     final result = await _memoLocalSource.getAllMemos();
     return result.fold((l) => Left(l), (r) {
-      final memoEntityList =
-          r.map<MemoEntity>((memo) => memoEntityMapper(memo)).toList();
+      final memoEntityList = r
+          .map<MemoEntity>((memo) => memoEntityMapperFromMemoDto(memo))
+          .toList();
       return Right(memoEntityList);
     });
   }
 
   @override
   Future<BooleanMemoResponse> update(MemoEntity memo) async {
-    final result = await _memoLocalSource.updateMemo(memoMapper(memo));
+    final result =
+        await _memoLocalSource.updateMemo(memoDtoMapperFromMemoEntity(memo));
     return result.fold((l) => Left(l), (r) => Right(r));
   }
 
-  memoEntityMapper(Memo memo) {
+  MemoEntity memoEntityMapperFromMemoDto(MemoDto memo) {
     return MemoEntity(
       id: memo.id,
       title: memo.title,
@@ -65,8 +69,8 @@ class MemoRepositoryImpl implements MemoRepository {
     );
   }
 
-  memoMapper(MemoEntity memoEntity) {
-    return Memo(
+  MemoDto memoDtoMapperFromMemoEntity(MemoEntity memoEntity) {
+    return MemoDto(
       id: memoEntity.id,
       title: memoEntity.title,
       content: memoEntity.content,
