@@ -13,7 +13,7 @@ class UpdateMemoUseCase extends ParamUseCase<BooleanMemoResponse, MemoEntity> {
   UpdateMemoUseCase(this._repository);
 
   @override
-  Future<BooleanMemoResponse> execute(MemoEntity param) {
+  Future<BooleanMemoResponse> call(MemoEntity param) {
     return _repository.update(param);
   }
 }

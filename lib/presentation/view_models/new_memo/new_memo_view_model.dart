@@ -5,5 +5,6 @@ final newMemoViewModelProvider =
     Provider<NewMemoViewMOdel>((ref) => NewMemoViewMOdel());
 
 class NewMemoViewMOdel {
+  
   final memo = memoProvider;
 }

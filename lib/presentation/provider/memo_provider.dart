@@ -52,7 +52,7 @@ class MemoStateProvider extends StateNotifier<State<List<MemoEntity>>> {
         title: title,
         createdAt: DateTime.now(),
         content: content);
-    final BooleanMemoResponse result = await _addMemoUseCase.execute(memo);
+    final BooleanMemoResponse result = await _addMemoUseCase(memo);
     result.fold((l) => State.error(l), (r) {
       if (state.data != null) {
         state = State.success(state.data! + [memo]);
@@ -63,7 +63,7 @@ class MemoStateProvider extends StateNotifier<State<List<MemoEntity>>> {
   }
 
   Future<void> deleteMemo(String id) async {
-    final BooleanMemoResponse result = await _deleteMemoUseCase.execute(id);
+    final BooleanMemoResponse result = await _deleteMemoUseCase(id);
     result.fold((l) => State.error(l), (r) {
       if (state.data != null) {
         state =
@@ -75,7 +75,7 @@ class MemoStateProvider extends StateNotifier<State<List<MemoEntity>>> {
   }
 
   Future<void> updateMemo(MemoEntity memo) async {
-    final BooleanMemoResponse result = await _updateMemoUseCase.execute(memo);
+    final BooleanMemoResponse result = await _updateMemoUseCase(memo);
     result.fold((l) => State.error(l), (r) {
       state = State.success(state.data!.map((value) {
         if (value.id == memo.id) {
@@ -88,7 +88,7 @@ class MemoStateProvider extends StateNotifier<State<List<MemoEntity>>> {
   }
 
   Future<void> getMemo(String id) async {
-    final NullableMemoResponse result = await _getMemoUseCase.execute(id);
+    final NullableMemoResponse result = await _getMemoUseCase(id);
     result.fold((l) => State.error(l), (r) {
       if (r != null) {
         state = State.success([r]);

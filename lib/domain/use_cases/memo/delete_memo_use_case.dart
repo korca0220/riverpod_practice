@@ -13,7 +13,7 @@ class DeleteMemoUseCase extends ParamUseCase<BooleanMemoResponse, String> {
   DeleteMemoUseCase(this._repository);
 
   @override
-  Future<BooleanMemoResponse> execute(String param) {
+  Future<BooleanMemoResponse> call(String param) {
     return _repository.delete(param);
   }
 }

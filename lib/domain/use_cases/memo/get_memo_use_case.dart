@@ -12,7 +12,7 @@ class GetMemoUseCase extends ParamUseCase<NullableMemoResponse, String> {
   GetMemoUseCase(this._repository);
 
   @override
-  Future<NullableMemoResponse> execute(String param) {
+  Future<NullableMemoResponse> call(String param) {
     return _repository.get(param);
   }
 }

@@ -1,3 +1,3 @@
 abstract class ParamUseCase<T, P> {
-  Future<T> execute(P param);
+  Future<T> call(P param);
 }

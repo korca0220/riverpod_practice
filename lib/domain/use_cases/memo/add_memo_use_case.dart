@@ -15,7 +15,7 @@ class AddMemoUseCase extends ParamUseCase<BooleanMemoResponse, MemoEntity> {
   AddMemoUseCase(this._repository);
 
   @override
-  Future<BooleanMemoResponse> execute(MemoEntity param) async {
+  Future<BooleanMemoResponse> call(MemoEntity param) async {
     return _repository.create(param);
   }
 }
