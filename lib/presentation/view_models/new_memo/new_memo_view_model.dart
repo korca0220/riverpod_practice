@@ -21,7 +21,7 @@ class NewMemoViewMOdel {
 
   Future<bool> addMemo() async {
     try {
-      await _ref.watch(memoProvider.notifier).addMemo(
+      await _ref.read(memoProvider.notifier).addMemo(
             titleController.text,
             contentController.text,
           );

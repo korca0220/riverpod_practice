@@ -7,8 +7,30 @@ import 'package:riverpod_practice/domain/use_cases/memo/get_all_memo_use_case.da
 import 'package:riverpod_practice/domain/use_cases/memo/get_memo_use_case.dart';
 import 'package:riverpod_practice/domain/use_cases/memo/update_memo_use_case.dart';
 import 'package:riverpod_practice/global/typedef/typedefs.dart';
+import 'package:riverpod_practice/presentation/provider/sort_filter_provider.dart';
 import 'package:riverpod_practice/presentation/state/state.dart';
 import 'package:uuid/uuid.dart';
+
+final sortedMemoListState = Provider<State<List<MemoEntity>>>((ref) {
+  final memoListState = ref.watch(memoProvider);
+  final orderBySortState = ref.watch(sortOrderProvider);
+
+  return memoListState.when(
+    initial: () => const State.initial(),
+    loading: () => const State.loading(),
+    error: (exception) => State.error(exception),
+    success: (memoList) {
+      switch (orderBySortState) {
+        case SortOrder.ascending:
+          return State.success(memoList.toList()
+            ..sort((a, b) => a.createdAt.compareTo(b.createdAt)));
+        case SortOrder.descending:
+          return State.success(memoList.toList()
+            ..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
+      }
+    },
+  );
+});
 
 final memoProvider =
     StateNotifierProvider<MemoStateProvider, State<List<MemoEntity>>>(((ref) {

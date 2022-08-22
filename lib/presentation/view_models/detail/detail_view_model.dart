@@ -19,7 +19,7 @@ class DetailViewModel {
   }
 
   MemoEntity get memo =>
-      _ref.watch(memoProvider).data!.firstWhere((m) => m.id == _id);
+      _ref.read(memoProvider).data!.firstWhere((m) => m.id == _id);
 
   _init() {
     titleController = useTextEditingController(text: memo.title);
@@ -34,7 +34,7 @@ class DetailViewModel {
         content: contentController.text,
         createdAt: DateTime.now(),
       );
-      await _ref.watch(memoProvider.notifier).updateMemo(updateMemo);
+      await _ref.read(memoProvider.notifier).updateMemo(updateMemo);
       titleController.clear();
       contentController.clear();
       return true;

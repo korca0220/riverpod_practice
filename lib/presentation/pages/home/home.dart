@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_practice/global/routes/pages.dart';
+import 'package:riverpod_practice/presentation/provider/memo_provider.dart';
+import 'package:riverpod_practice/presentation/provider/sort_filter_provider.dart';
 import 'package:riverpod_practice/presentation/view_models/home/home_view_model.dart';
 
 class Home extends ConsumerWidget {
@@ -14,18 +16,48 @@ class Home extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Memo'),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          GoRouter.of(context).pushNamed(RouteList.new_page.name);
+        },
+        backgroundColor: Colors.red,
+        child: const Icon(Icons.add),
+      ),
       body: Column(
         children: [
-          GestureDetector(
-            child: Container(
-              height: 50,
-              width: double.infinity,
-              color: Colors.red,
-              child: const Center(child: Text('New Memo')),
-            ),
-            onTap: () {
-              GoRouter.of(context).pushNamed(RouteList.new_page.name);
-            },
+          Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  child: Container(
+                    margin: const EdgeInsets.all(5),
+                    height: 40,
+                    color: viewModel.orderState == SortOrder.ascending
+                        ? Colors.red
+                        : Colors.grey,
+                    child: const Center(child: Text('Ascending')),
+                  ),
+                  onTap: () {
+                    viewModel.toggleOrderBy();
+                  },
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  child: Container(
+                    margin: const EdgeInsets.all(5),
+                    height: 40,
+                    color: viewModel.orderState == SortOrder.descending
+                        ? Colors.red
+                        : Colors.grey,
+                    child: const Center(child: Text('Descending')),
+                  ),
+                  onTap: () {
+                    viewModel.toggleOrderBy();
+                  },
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: viewModel.memoState.maybeWhen(
@@ -35,7 +67,7 @@ class Home extends ConsumerWidget {
               loading: () => const Center(
                 child: CircularProgressIndicator(),
               ),
-              success: (value) => ListView.builder(
+              success: (value) => ListView.separated(
                 itemBuilder: ((context, index) => Dismissible(
                       key: ValueKey(value[index].id),
                       background: Container(
@@ -55,8 +87,20 @@ class Home extends ConsumerWidget {
                         child: SizedBox(
                           height: 50,
                           child: ListTile(
-                            title: Text(value[index].title),
-                            subtitle: Text(value[index].content ?? ''),
+                            title: Text(
+                              value[index].title,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(value[index].content ?? ''),
+                                Text(value[index].createdAt.toIso8601String()),
+                              ],
+                            ),
                             dense: true,
                           ),
                         ),
@@ -69,6 +113,9 @@ class Home extends ConsumerWidget {
                       ),
                     )),
                 itemCount: value.length,
+                separatorBuilder: (context, index) {
+                  return const Divider(height: 20);
+                },
               ),
             ),
           ),
