@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_practice/domain/entities/memo/memo_entity.dart';
 import 'package:riverpod_practice/presentation/view_models/detail/detail_view_model.dart';
 
 class DetailPage extends HookConsumerWidget {
@@ -11,10 +9,7 @@ class DetailPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(detailViewModelProvider);
-    final memo = ref.watch(viewModel.memo).data!.firstWhere((m) => m.id == id);
-    final titleController = useTextEditingController(text: memo.title);
-    final contentController = useTextEditingController(text: memo.content);
+    final viewModel = ref.watch(detailViewModelProvider(id));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail Page'),
@@ -41,7 +36,7 @@ class DetailPage extends HookConsumerWidget {
                   Expanded(
                     flex: 3,
                     child: TextField(
-                      controller: titleController,
+                      controller: viewModel.titleController,
                     ),
                   ),
                 ],
@@ -68,7 +63,7 @@ class DetailPage extends HookConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextFormField(
-                    controller: contentController,
+                    controller: viewModel.contentController,
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
                     decoration: const InputDecoration(
@@ -84,17 +79,10 @@ class DetailPage extends HookConsumerWidget {
               child: ElevatedButton(
                 child: const Text('Update'),
                 onPressed: () {
-                  ref.watch(viewModel.memo.notifier).updateMemo(
-                        MemoEntity(
-                          id: id,
-                          title: titleController.text,
-                          content: contentController.text,
-                          createdAt: DateTime.now(),
-                        ),
+                  viewModel.updateMemo().then(
+                        (value) =>
+                            value ? GoRouter.of(context).pop() : Container(),
                       );
-                  titleController.clear();
-                  contentController.clear();
-                  GoRouter.of(context).pop();
                 },
               ),
             ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_practice/data/sources/local/custom_object/memo.dart';
 import 'package:riverpod_practice/presentation/view_models/new_memo/new_memo_view_model.dart';
 
 class NewMemo extends HookConsumerWidget {
@@ -10,8 +8,6 @@ class NewMemo extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final titleController = useTextEditingController();
-    final contentController = useTextEditingController();
     final viewModel = ref.watch(newMemoViewModelProvider);
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +35,7 @@ class NewMemo extends HookConsumerWidget {
                   Expanded(
                     flex: 3,
                     child: TextField(
-                      controller: titleController,
+                      controller: viewModel.titleController,
                     ),
                   ),
                 ],
@@ -66,7 +62,7 @@ class NewMemo extends HookConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextFormField(
-                    controller: contentController,
+                    controller: viewModel.contentController,
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
                     decoration: const InputDecoration(
@@ -82,12 +78,10 @@ class NewMemo extends HookConsumerWidget {
               child: ElevatedButton(
                 child: const Text('Save'),
                 onPressed: () {
-                  ref
-                      .read(viewModel.memo.notifier)
-                      .addMemo(titleController.text, contentController.text);
-                  titleController.clear();
-                  contentController.clear();
-                  GoRouter.of(context).pop();
+                  viewModel.addMemo().then(
+                        (value) =>
+                            value ? GoRouter.of(context).pop() : Container(),
+                      );
                 },
               ),
             ),

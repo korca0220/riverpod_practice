@@ -8,10 +8,12 @@ class MemoEntity {
     required this.title,
     required this.createdAt,
     this.content = '',
+    this.completed = false,
   });
 
   final String id;
   final String title;
   final String? content;
   final DateTime createdAt;
+  final bool completed;
 }
