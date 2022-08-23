@@ -5,15 +5,13 @@ import 'package:riverpod_practice/presentation/provider/memo_provider.dart';
 import 'package:riverpod_practice/presentation/provider/sort_filter_provider.dart';
 import 'package:riverpod_practice/presentation/state/state.dart';
 
-final homeViewModelProvider = Provider<HomeViewModel>(
-  (ref) => HomeViewModel(ref),
-);
+final homeViewModelProvider = Provider.autoDispose<HomeViewModel>((ref) {
+  return HomeViewModel(ref);
+});
 
 class HomeViewModel {
-  final Ref _ref;
   HomeViewModel(this._ref);
-
-  
+  final AutoDisposeProviderRef<HomeViewModel> _ref;
 
   State<List<MemoEntity>> get memoState => _ref.watch(sortedMemoListState);
   SortOrder get orderState => _ref.watch(sortOrderProvider);

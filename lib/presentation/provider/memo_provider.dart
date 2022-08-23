@@ -11,7 +11,7 @@ import 'package:riverpod_practice/presentation/provider/sort_filter_provider.dar
 import 'package:riverpod_practice/presentation/state/state.dart';
 import 'package:uuid/uuid.dart';
 
-final sortedMemoListState = Provider<State<List<MemoEntity>>>((ref) {
+final sortedMemoListState = Provider.autoDispose<State<List<MemoEntity>>>((ref) {
   final memoListState = ref.watch(memoProvider);
   final orderBySortState = ref.watch(sortOrderProvider);
 
