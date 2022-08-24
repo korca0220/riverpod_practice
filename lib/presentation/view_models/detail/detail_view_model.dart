@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/domain/entities/memo/memo_entity.dart';
+import 'package:riverpod_practice/global/interfaces/view_model/view_model.dart';
 import 'package:riverpod_practice/presentation/provider/memo_provider.dart';
 
 final detailViewModelProvider =
@@ -9,19 +10,18 @@ final detailViewModelProvider =
   return DetailViewModel(ref, id);
 });
 
-class DetailViewModel {
+class DetailViewModel extends ViewModelInterface {
   final Ref _ref;
   final String _id;
   late TextEditingController titleController;
   late TextEditingController contentController;
-  DetailViewModel(this._ref, this._id) {
-    _init();
-  }
+  DetailViewModel(this._ref, this._id);
 
   MemoEntity get memo =>
       _ref.read(memoProvider).data!.firstWhere((m) => m.id == _id);
 
-  _init() {
+  @override
+  init() {
     titleController = useTextEditingController(text: memo.title);
     contentController = useTextEditingController(text: memo.content);
   }
