@@ -1,4 +1,3 @@
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/domain/entities/memo/memo_entity.dart';
 import 'package:riverpod_practice/global/interfaces/view_model/view_model.dart';
@@ -8,6 +7,28 @@ import 'package:riverpod_practice/presentation/state/state.dart';
 
 final homeViewModelProvider = Provider.autoDispose<HomeViewModel>((ref) {
   return HomeViewModel(ref);
+});
+
+final sortedMemoListState =
+    Provider.autoDispose<State<List<MemoEntity>>>((ref) {
+  final memoListState = ref.watch(memoProvider);
+  final orderBySortState = ref.watch(sortOrderProvider);
+
+  return memoListState.when(
+    initial: () => const State.initial(),
+    loading: () => const State.loading(),
+    error: (exception) => State.error(exception),
+    success: (memoList) {
+      switch (orderBySortState) {
+        case SortOrder.ascending:
+          return State.success(memoList.toList()
+            ..sort((a, b) => a.createdAt.compareTo(b.createdAt)));
+        case SortOrder.descending:
+          return State.success(memoList.toList()
+            ..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
+      }
+    },
+  );
 });
 
 class HomeViewModel extends ViewModelInterface {

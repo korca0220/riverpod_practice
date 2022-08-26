@@ -78,10 +78,21 @@ class NewMemo extends HookConsumerWidget {
               child: ElevatedButton(
                 child: const Text('Save'),
                 onPressed: () {
-                  viewModel.addMemo().then(
-                        (value) =>
-                            value ? GoRouter.of(context).pop() : Container(),
+                  viewModel.addMemo().then((value) {
+                    if (value) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text('Success to add memo'),
+                          duration: const Duration(seconds: 2),
+                          action:
+                              SnackBarAction(label: 'Undo', onPressed: () {}),
+                        ),
                       );
+                      return Future.delayed(const Duration(seconds: 1), () {
+                        GoRouter.of(context).pop();
+                      });
+                    }
+                  });
                 },
               ),
             ),
