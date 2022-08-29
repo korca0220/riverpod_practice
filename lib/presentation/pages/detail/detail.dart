@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_practice/presentation/view_models/detail/detail_view_model.dart';
 
+import 'widgets/content_body.dart';
+import 'widgets/title_header.dart';
+import 'widgets/update_button.dart';
+
 class DetailPage extends HookConsumerWidget {
   const DetailPage({required this.id, Key? key}) : super(key: key);
   final String id;
@@ -23,75 +27,14 @@ class DetailPage extends HookConsumerWidget {
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            SizedBox(
-              height: 35,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Center(child: Text('Title ')),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    flex: 3,
-                    child: TextField(
-                      controller: titleController,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            TitleHeader(titleController: titleController),
             const SizedBox(height: 20),
-            Column(
-              children: [
-                Container(
-                  height: 35,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Center(child: Text('Content')),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  height: 200,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TextFormField(
-                    controller: contentController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 10,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            ContentBody(contentController: contentController),
             const SizedBox(height: 20),
-            SizedBox(
-              width: 100,
-              child: ElevatedButton(
-                child: const Text('Update'),
-                onPressed: () {
-                  viewModel
-                      .updateMemo(titleController.text, contentController.text)
-                      .then(
-                        (value) =>
-                            value ? GoRouter.of(context).pop() : Container(),
-                      );
-                },
-              ),
+            UpdateButton(
+              titleController: titleController,
+              contentController: contentController,
+              viewModel: viewModel,
             ),
           ],
         ),

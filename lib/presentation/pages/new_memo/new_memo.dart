@@ -25,7 +25,9 @@ class NewMemo extends HookWidget {
             ContentBody(contentController: contentController),
             const SizedBox(height: 20),
             SaveButton(
-                title: titleController.text, content: contentController.text),
+              titleController: titleController,
+              contentController: contentController,
+            ),
           ],
         ),
       ),

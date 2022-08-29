@@ -6,12 +6,12 @@ import 'package:riverpod_practice/presentation/view_models/new_memo/new_memo_vie
 class SaveButton extends ConsumerWidget {
   const SaveButton({
     Key? key,
-    required this.title,
-    required this.content,
+    required this.titleController,
+    required this.contentController,
   }) : super(key: key);
 
-  final String title;
-  final String content;
+  final TextEditingController titleController;
+  final TextEditingController contentController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +21,9 @@ class SaveButton extends ConsumerWidget {
       child: ElevatedButton(
         child: const Text('Save'),
         onPressed: () {
-          viewModel.addMemo(title, content).then((value) {
+          viewModel
+              .addMemo(titleController.text, contentController.text)
+              .then((value) {
             if (value) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
