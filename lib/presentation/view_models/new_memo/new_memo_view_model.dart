@@ -9,24 +9,16 @@ final newMemoViewModelProvider =
 
 class NewMemoViewMOdel extends ViewModelInterface {
   final Ref _ref;
-  late TextEditingController titleController;
-  late TextEditingController contentController;
+
   NewMemoViewMOdel(this._ref);
 
-  @override
-  init() {
-    titleController = useTextEditingController();
-    contentController = useTextEditingController();
-  }
-
-  Future<bool> addMemo() async {
+  Future<bool> addMemo(String title, String content) async {
     try {
       await _ref.read(memoProvider.notifier).addMemo(
-            titleController.text,
-            contentController.text,
+            title,
+            content,
           );
-      titleController.clear();
-      contentController.clear();
+
       return true;
     } catch (e) {
       print(e);

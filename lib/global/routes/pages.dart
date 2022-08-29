@@ -5,8 +5,8 @@ import 'package:riverpod_practice/presentation/pages/pages.dart';
 
 part './routes.dart';
 
-final routerProvider = Provider<GoRouter>((ref) {
-  final router = RouterNotifier(ref);
+final routerProvider = Provider<GoRouter>((_) {
+  final router = RouterNotifier();
 
   return GoRouter(
     debugLogDiagnostics: false,
@@ -16,9 +16,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 });
 
 class RouterNotifier extends ChangeNotifier {
-  final Ref _ref;
-
-  RouterNotifier(this._ref);
+  RouterNotifier();
 
   List<GoRoute> get routes => [
         GoRoute(
@@ -35,6 +33,9 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteList.detail_page.name,
               path: RouteList.detail_page.path,
               builder: (context, state) {
+                if (state.params['id'] == null) {
+                  return const Home();
+                }
                 return DetailPage(id: state.params['id']!);
               },
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_practice/presentation/view_models/detail/detail_view_model.dart';
@@ -10,6 +11,10 @@ class DetailPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(detailViewModelProvider(id));
+    final titleController =
+        useTextEditingController(text: viewModel.memo.title);
+    final contentController =
+        useTextEditingController(text: viewModel.memo.content);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail Page'),
@@ -36,7 +41,7 @@ class DetailPage extends HookConsumerWidget {
                   Expanded(
                     flex: 3,
                     child: TextField(
-                      controller: viewModel.titleController,
+                      controller: titleController,
                     ),
                   ),
                 ],
@@ -63,7 +68,7 @@ class DetailPage extends HookConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextFormField(
-                    controller: viewModel.contentController,
+                    controller: contentController,
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
                     decoration: const InputDecoration(
@@ -79,7 +84,9 @@ class DetailPage extends HookConsumerWidget {
               child: ElevatedButton(
                 child: const Text('Update'),
                 onPressed: () {
-                  viewModel.updateMemo().then(
+                  viewModel
+                      .updateMemo(titleController.text, contentController.text)
+                      .then(
                         (value) =>
                             value ? GoRouter.of(context).pop() : Container(),
                       );
