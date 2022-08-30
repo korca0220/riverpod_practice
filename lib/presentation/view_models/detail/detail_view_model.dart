@@ -12,14 +12,20 @@ class DetailViewModel extends ViewModelInterface {
   final Ref _ref;
   final String _id;
   DetailViewModel(this._ref, this._id);
+  MemoEntity? memo;
 
-  MemoEntity get memo =>
-      _ref.watch(memoProvider).data!.firstWhere((m) => m.id == _id);
+  @override
+  init() {
+    final data = _ref.watch(memoProvider).data;
+    if (data != null) {
+      memo = data.firstWhere((element) => element.id == _id);
+    }
+  }
 
   Future<bool> updateMemo(String title, String content) async {
     try {
       final updateMemo = MemoEntity(
-        id: memo.id,
+        id: memo!.id,
         title: title,
         content: content,
         createdAt: DateTime.now(),

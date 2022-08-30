@@ -18,8 +18,18 @@ class DetailPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     viewModel = ref.watch(detailViewModelProvider(id));
-    titleController = useTextEditingController(text: viewModel.memo.title);
-    contentController = useTextEditingController(text: viewModel.memo.content);
+    titleController = useTextEditingController();
+    contentController = useTextEditingController();
+
+    useEffect(() {
+      if (viewModel.memo != null) {
+        titleController.value =
+            TextEditingValue(text: viewModel.memo!.title ?? '');
+        contentController.value =
+            TextEditingValue(text: viewModel.memo!.content ?? '');
+      }
+      return;
+    }, [viewModel.memo]);
 
     return Scaffold(
       appBar: AppBar(
