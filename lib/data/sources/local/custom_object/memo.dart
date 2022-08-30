@@ -8,7 +8,7 @@ class Memo {
   String id;
 
   @HiveField(1)
-  String title;
+  String? title;
 
   @HiveField(2)
   String? content;
@@ -18,7 +18,7 @@ class Memo {
 
   Memo({
     required this.id,
-    required this.title,
+    this.title,
     this.content,
     required this.createdAt,
   });

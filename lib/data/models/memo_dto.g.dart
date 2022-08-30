@@ -8,7 +8,7 @@ part of 'memo_dto.dart';
 
 _$_MemoDto _$$_MemoDtoFromJson(Map<String, dynamic> json) => _$_MemoDto(
       id: json['id'] as String,
-      title: json['title'] as String,
+      title: json['title'] as String?,
       content: json['content'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );

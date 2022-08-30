@@ -21,7 +21,7 @@ MemoDto _$MemoDtoFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$MemoDto {
   String get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   String? get content => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
@@ -34,7 +34,7 @@ mixin _$MemoDto {
 abstract class $MemoDtoCopyWith<$Res> {
   factory $MemoDtoCopyWith(MemoDto value, $Res Function(MemoDto) then) =
       _$MemoDtoCopyWithImpl<$Res>;
-  $Res call({String id, String title, String? content, DateTime createdAt});
+  $Res call({String id, String? title, String? content, DateTime createdAt});
 }
 
 /// @nodoc
@@ -60,7 +60,7 @@ class _$MemoDtoCopyWithImpl<$Res> implements $MemoDtoCopyWith<$Res> {
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       content: content == freezed
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -79,7 +79,7 @@ abstract class _$$_MemoDtoCopyWith<$Res> implements $MemoDtoCopyWith<$Res> {
           _$_MemoDto value, $Res Function(_$_MemoDto) then) =
       __$$_MemoDtoCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String title, String? content, DateTime createdAt});
+  $Res call({String id, String? title, String? content, DateTime createdAt});
 }
 
 /// @nodoc
@@ -106,7 +106,7 @@ class __$$_MemoDtoCopyWithImpl<$Res> extends _$MemoDtoCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       content: content == freezed
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -123,10 +123,7 @@ class __$$_MemoDtoCopyWithImpl<$Res> extends _$MemoDtoCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_MemoDto extends _MemoDto {
   _$_MemoDto(
-      {required this.id,
-      required this.title,
-      this.content,
-      required this.createdAt})
+      {required this.id, this.title, this.content, required this.createdAt})
       : super._();
 
   factory _$_MemoDto.fromJson(Map<String, dynamic> json) =>
@@ -135,7 +132,7 @@ class _$_MemoDto extends _MemoDto {
   @override
   final String id;
   @override
-  final String title;
+  final String? title;
   @override
   final String? content;
   @override
@@ -182,7 +179,7 @@ class _$_MemoDto extends _MemoDto {
 abstract class _MemoDto extends MemoDto {
   factory _MemoDto(
       {required final String id,
-      required final String title,
+      final String? title,
       final String? content,
       required final DateTime createdAt}) = _$_MemoDto;
   _MemoDto._() : super._();
@@ -192,7 +189,7 @@ abstract class _MemoDto extends MemoDto {
   @override
   String get id;
   @override
-  String get title;
+  String? get title;
   @override
   String? get content;
   @override

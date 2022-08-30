@@ -12,7 +12,7 @@ class MemoEntity {
   });
 
   final String id;
-  final String title;
+  final String? title;
   final String? content;
   final DateTime createdAt;
   final bool completed;

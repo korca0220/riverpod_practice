@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/domain/entities/memo/memo_entity.dart';
 import 'package:riverpod_practice/global/interfaces/view_model/view_model.dart';
 import 'package:riverpod_practice/presentation/provider/memo_provider.dart';
 
 final detailViewModelProvider =
-    Provider.family.autoDispose<DetailViewModel, String>((ref, id) {
+    Provider.family<DetailViewModel, String>((ref, id) {
   return DetailViewModel(ref, id);
 });
 
@@ -16,7 +14,7 @@ class DetailViewModel extends ViewModelInterface {
   DetailViewModel(this._ref, this._id);
 
   MemoEntity get memo =>
-      _ref.read(memoProvider).data!.firstWhere((m) => m.id == _id);
+      _ref.watch(memoProvider).data!.firstWhere((m) => m.id == _id);
 
   Future<bool> updateMemo(String title, String content) async {
     try {

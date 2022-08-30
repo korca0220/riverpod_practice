@@ -11,8 +11,6 @@ import 'package:riverpod_practice/presentation/provider/sort_filter_provider.dar
 import 'package:riverpod_practice/presentation/state/state.dart';
 import 'package:uuid/uuid.dart';
 
-
-
 final memoProvider =
     StateNotifierProvider<MemoStateProvider, State<List<MemoEntity>>>(((ref) {
   return MemoStateProvider(
@@ -90,12 +88,13 @@ class MemoStateProvider extends StateNotifier<State<List<MemoEntity>>> {
     });
   }
 
-  Future<void> getMemo(String id) async {
+  Future<MemoEntity?> getMemo(String id) async {
     final NullableMemoResponse result = await _getMemoUseCase(id);
     result.fold((l) => State.error(l), (r) {
       if (r != null) {
-        state = State.success([r]);
-      } else {}
+        return r;
+      }
     });
+    return null;
   }
 }

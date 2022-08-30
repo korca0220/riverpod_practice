@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:riverpod_practice/global/routes/pages.dart';
 
 void main() async {
   await Hive.initFlutter();
+  setUrlStrategy(PathUrlStrategy());
   runApp(const ProviderScope(child: MyApp()));
 }
 

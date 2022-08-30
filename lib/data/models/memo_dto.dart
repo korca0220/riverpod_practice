@@ -7,7 +7,7 @@ part 'memo_dto.g.dart';
 class MemoDto with _$MemoDto {
   factory MemoDto({
     required String id,
-    required String title,
+    String? title,
     String? content,
     required DateTime createdAt,
   }) = _MemoDto;

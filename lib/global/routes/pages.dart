@@ -33,9 +33,6 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteList.detail_page.name,
               path: RouteList.detail_page.path,
               builder: (context, state) {
-                if (state.params['id'] == null) {
-                  return const Home();
-                }
                 return DetailPage(id: state.params['id']!);
               },
             ),

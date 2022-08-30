@@ -34,7 +34,7 @@ class MemoItem extends StatelessWidget {
             height: 50,
             child: ListTile(
               title: Text(
-                memoItem.title,
+                memoItem.title ?? '',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
